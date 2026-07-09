@@ -60,7 +60,7 @@ struct ReservationForm: View {
             }
             
             Section(header:Text("Optional")){
-                TextField("Occasion", text:$occasionText)
+                TextField("Occasion (Birthday, Anniversary, etc.)", text:$occasionText)
                     .textInputAutocapitalization(.words)
                     .autocorrectionDisabled(true)
                 Stepper("Children: \(childrenCount)",value:$childrenCount, in:1...maxChildren)
