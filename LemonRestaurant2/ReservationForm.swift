@@ -22,11 +22,22 @@ struct ReservationForm: View {
     @State private var occasionText: String = ""
     @State private var childrenCount: Int = 0
     @State private var showMessage: Bool = false
+    @State private var showPreview = false
     
     var nameFieldColor: Color{
         if userName.isEmpty{
             return .red
         }else if userName.count < 3{
+            return .orange
+        }else{
+            return .primary
+        }
+    }
+    
+    var phoneFieldColor: Color{
+        if phoneNumber.isEmpty{
+            return .red
+        }else if phoneNumber.count < 10{
             return .orange
         }else{
             return .primary
@@ -98,6 +109,13 @@ struct ReservationForm: View {
             Section(header:Text("Contact Information")){
                 TextField("Phone Number", text:$phoneNumber)
                     .keyboardType(.numberPad)
+                    .padding(6)
+                    .background(phoneFieldColor.opacity(0.05))
+                    .cornerRadius(8)
+                    .overlay(
+                        RoundedRectangle(cornerRadius:8)
+                            .stroke(phoneFieldColor,lineWidth:0.5))
+
                 
                 if phoneNumber.isEmpty{
                     Text("Please enter your phone number")
@@ -138,25 +156,43 @@ struct ReservationForm: View {
                 Text(reservationStatus)
                     .font(.footnote)
                     .foregroundStyle(.orange)
-                Button("Preview reservation details"){
-                    preview =
-                        """
-                        Name: \(userName)
-                        Guest: \(guestCount)
-                        Phone: \(phoneNumber)
-                        Children: \(childrenCount)
-                        Ocassion: \(occasionText)
+                if !showPreview {
+                    Button("Preview reservation details"){
                         
-                        """
-                }.disabled(userName.isEmpty || phoneNumber.isEmpty || phoneNumber.count < 10)
+                        preview =
+                            """
+                            Name: \(userName)
+                            Guest: \(guestCount)
+                            Phone: \(phoneNumber)
+                            """
+
+                        if childrenCount > 0 {
+                            preview += "\nChildren: \(childrenCount)"
+                        }
+
+                        if !occasionText.isEmpty {
+                            preview += "\nOccasion: \(occasionText)"
+                        }
+                        
+                        showPreview.toggle()
+                        
+                    }.disabled(userName.isEmpty || phoneNumber.isEmpty || phoneNumber.count < 10)
+                }else{
+                    Button("Close preview"){
+                        showPreview.toggle()
+                    }
+                }
+                
             }
             //preview
-            Section(header:Text("Preview")){
-                Text(preview)
-                    .font(.footnote)
-                    .foregroundStyle(.secondary)
-                    .padding(4)
-                    .textSelection(.enabled)
+            if showPreview {
+                Section("Preview") {
+                    Text(preview)
+                        .font(.footnote)
+                        .foregroundStyle(.secondary)
+                        .padding(4)
+                        .textSelection(.enabled)
+                }
             }
         }
         .navigationTitle("Reservation")
