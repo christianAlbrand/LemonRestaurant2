@@ -5,7 +5,7 @@
     - Each value has an index starting at 0
  
  -- Syntax --
- var/let arrayName = [value1, value2, value3, ...]
+ var/let arrayName:[dataType] = [value1, value2, value3, ...]
  
  
  */
@@ -13,7 +13,7 @@
 print("----- ARRAYS ------")
 
 print("\n-- Basic Array (String) --")
-var dishes = ["pizza", "pasta", "burger", "salad", "steak"]
+var dishes: [String] = ["pizza", "pasta", "burger", "salad", "steak"]
 
 print(dishes)
 print(dishes[0])
@@ -38,7 +38,7 @@ Bool -> false
 */
 
 print("\n-- Price Array (Double)")
-var prices = [9.99, 10.50, 6.00]
+var prices: [Double] = [9.99, 10.50, 6.00]
 print(prices[2])
 
 let total = prices[0] + prices[1]
@@ -48,6 +48,6 @@ print("Total for two dishes \(total)")
  Create an array with your top 3 favorite deserts and print them
  */
  
-var dessertsFav = ["Ice creaam", "chocolate", "chips"]
+var dessertsFav: [String] = ["Ice creaam", "chocolate", "chips"]
 print(dessertsFav)
 print(dessertsFav.count)
