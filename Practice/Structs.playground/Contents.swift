@@ -128,4 +128,86 @@ tea.printDetails()
 juice.printDetails()
 
 
+// Session#2
+print("\n-- Movie Struct --")
 
+struct Movie {
+    var title: String
+    var director: String
+    var genre: String?
+    var year: Int
+    
+    func printSummary() {
+        print("\(title) (\(year)) (\(genre ?? "No genre provided")) - Directed by \(director)")
+    }
+}
+
+// Creating instances
+let interstellar = Movie(
+    title: "Interstellar",
+    director: "Christopher Nolan",
+    year: 2014
+)
+
+let darkKnight = Movie(
+    title: "The Dark Knight",
+    director: "Christopher Nolan",
+    year: 2008
+)
+
+let toyStory = Movie(
+    title: "Toy Story",
+    director: "John Lasseter",
+    year: 1995
+)
+
+let spiderManH = Movie(
+    title: "Spider-Man: Homecoming",
+    director: "Jon Watts",
+    year: 2017
+)
+
+let HarryPotter = Movie(
+    title: "Harry Potter",
+    director: "Chris Columbus",
+    year: 2001
+)
+
+interstellar.printSummary()
+darkKnight.printSummary()
+toyStory.printSummary()
+spiderManH.printSummary()
+HarryPotter.printSummary()
+
+// Array of structs
+
+var movies: [Movie] = [interstellar, darkKnight, toyStory, spiderManH, HarryPotter]
+
+print("\n-- Loop through movies array using for-in --")
+for movie in movies {
+    movie.printSummary()
+}
+
+print("\n-- Loop through movies array using forEach")
+movies.forEach{ movie in
+    movie.printSummary()
+}
+
+/*
+ mini challnge
+ 
+ 1. Add the propery genre to the Movie struct
+ 2. create 1 extra movie and add it to the array
+ 3. Loop through the array and print only movies released after  2000, and don't forget to also show the genre property
+ 
+ */
+
+print("\n-- Mini chllenge --")
+
+let shrek = Movie(title: "Shrek", director: "Andrew Adamson", genre: "Fantasy", year: 2001)
+movies.append(shrek)
+for movie in movies {
+    if movie.year > 2000{
+        movie.printSummary()
+    }
+}

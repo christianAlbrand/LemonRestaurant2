@@ -161,3 +161,22 @@ print("-- Report of the day --")
 ingredients.forEach { (key, value) in
     print("\(key) \(value)")
 }
+
+//Dictionary VS Structs
+
+// dictionary
+let dishDisct: [String: String] = [
+    "name": "Pizza",
+    "price": "12.99",
+    "image": "pizza.png"
+]
+
+// struct
+struct Drink {
+    var name: String
+    var price: Double
+    var image: String
+}
+
+let coffee = Drink(name: "Coffee", price: 9.99, image: "coffee.png")
+let wine = Drink(name: "Wine", price: 12.99, image: "wine.png")
