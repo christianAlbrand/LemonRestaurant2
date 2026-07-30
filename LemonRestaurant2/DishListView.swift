@@ -9,7 +9,10 @@ import SwiftUI
 
 struct DishListView: View {
     
+    @State private var selectedCategory:String = "All"
+    
     @State private var dishes: [Dish] = [
+        
         Dish(
             name: "Pancake",
             category: "Breakfast",
@@ -66,7 +69,23 @@ struct DishListView: View {
             description: "Light and fluffy",
             image: "cakeImage"
         ),
+        Dish(
+            name: "Wine",
+            category: "Drinks",
+            price: 10.00,
+            description: "A glass of our finest wines",
+            image: "wineImage"
+        ),
     ]
+    
+    // computed property
+    var filteredDishes:[Dish] {
+        if selectedCategory == "All" {
+            return dishes
+        } else {
+            return dishes.filter{ $0.category == selectedCategory}
+        }
+    }
     var body: some View {
         NavigationView {
             VStack(){
@@ -74,9 +93,41 @@ struct DishListView: View {
                     .font(.system(size: 35, weight: .bold))
                     .padding(10)
                     .multilineTextAlignment(.center)
+                
+                VStack(alignment: .leading) {
+                    Text("Discover Food")
+                    
+                    ScrollView(.horizontal, showsIndicators: false){
+                        HStack{
+                            ForEach(["All", "Breakfast", "Salads", "Main Courses", "Desserts", "Drinks"], id:\.self) { category in
+                                Text(category)
+                                    .padding(.vertical, 10)
+                                    .padding(.horizontal, 15)
+                                    .background(
+                                        RoundedRectangle(cornerRadius: 10)
+                                            .fill(
+                                                selectedCategory == category
+                                                    ? Color.green
+                                                    : Color.gray.opacity(0.2)
+                                            )
+                                    )
+                                    .animation(.easeIn(duration: 0.2))
+                                    .overlay(
+                                        RoundedRectangle(cornerRadius: 10)
+                                            .stroke(Color.black, lineWidth: 2)
+                                    )
+                                    .onTapGesture {
+                                        selectedCategory = category
+                                    }
+                            }
+                        }
+                    }
+                }
+                .font(.system(size: 25, weight: .bold))
+                .padding()
                 ScrollView {
                     LazyVGrid(columns: [GridItem(), GridItem()]) {
-                        ForEach(dishes, id:\.name) { dish in
+                        ForEach(filteredDishes, id:\.name) { dish in
                             VStack {
                                 Image(dish.image)
                                     .resizable()
@@ -93,10 +144,11 @@ struct DishListView: View {
                                     Text("\(dish.price, specifier: "%.2f")")
                                 }
                             }
-                            .background(.black.opacity(0.07))
-                            .shadow(color: .green.opacity(0.2), radius: 30, x:33, y: 40)
+                            .background(.white)
                             .clipShape(RoundedRectangle(cornerRadius: 10))
+                            .shadow(color: .gray.opacity(0.5), radius: 1, x:5, y: 5)
                             .padding(5)
+                            .animation(.easeIn(duration: 0.2))
                         }
                     }
                     
