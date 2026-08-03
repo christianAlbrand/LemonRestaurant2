@@ -10,6 +10,14 @@ import SwiftUI
 struct DishListView: View {
     
     @State private var selectedCategory:String = "All"
+    @State private var showAddDishView:Bool = false
+    @State private var newDish = Dish(
+        name: "",
+        category: "",
+        price: 0,
+        description: "",
+        image: ""
+    )
     
     @State private var dishes: [Dish] = [
         
@@ -128,34 +136,56 @@ struct DishListView: View {
                 ScrollView {
                     LazyVGrid(columns: [GridItem(), GridItem()]) {
                         ForEach(filteredDishes, id:\.name) { dish in
-                            VStack {
-                                Image(dish.image)
-                                    .resizable()
-                                    .scaledToFill()
-                                    .frame(height: 100)
-                                    .clipped()
-                                
+                            NavigationLink(destination: DishDetailView(dish: dish)) {
                                 VStack {
-                                    Text(dish.name)
+                                    Image(dish.image)
+                                        .resizable()
+                                        .scaledToFill()
+                                        .frame(height: 100)
+                                        .clipped()
                                     
-                                    Text(dish.description)
-                                        .lineLimit(2)
-                                    
-                                    Text("\(dish.price, specifier: "%.2f")")
+                                    VStack {
+                                        Text(dish.name)
+                                            .foregroundStyle(Color.black).bold()
+                                        
+                                        Text(dish.description)
+                                            .lineLimit(2)
+                                            .foregroundStyle(Color.gray)
+                                        
+                                        Text("\(dish.price, specifier: "%.2f")")
+                                            .foregroundStyle(Color.green)
+                                            .bold()
+                                    }
                                 }
+                                .background(.white)
+                                .clipShape(RoundedRectangle(cornerRadius: 10))
+                                .shadow(color: .gray.opacity(0.5), radius: 1, x:5, y: 5)
+                                .padding(5)
+                                .animation(.easeIn(duration: 0.2))
                             }
-                            .background(.white)
-                            .clipShape(RoundedRectangle(cornerRadius: 10))
-                            .shadow(color: .gray.opacity(0.5), radius: 1, x:5, y: 5)
-                            .padding(5)
-                            .animation(.easeIn(duration: 0.2))
                         }
                     }
                     
                 }
             }
         }
-
+        
+        HStack {
+            Button() {
+                showAddDishView = true
+            } label: {
+                HStack {
+                    Image(systemName: "plus.circle.fill")
+                    Text("Add Dish")
+                        .fontWeight(.bold)
+                }
+            }
+            .buttonStyle(.bordered)
+            .tint(.green)
+        }
+        .sheet(isPresented: $showAddDishView) {
+            AddDishView(dish: $newDish, dishes: $dishes)
+        }
     }
 }
 
